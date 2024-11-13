@@ -95,6 +95,48 @@
     (print (char a))
     (assoc estado :stack rest)))
 
+;; Funcion para leer un entero y apilar
+(defn input-int
+  [estado]
+  (print "Ingrese un número entero: ")
+  (flush)
+  (let [input (read-line)
+        valor (try
+                (Integer/parseInt input)
+                (catch Exception _ 0))]
+    (update estado :stack conj valor)))
+
+;; Funcion para leer un caracter y apilar el ASCII
+(defn input-char
+  [estado]
+  (print "Ingrese un carácter: ")
+  (flush)
+  (let [input (read)
+        valor (int input)]
+    (update estado :stack conj valor)))
+
+;; Funcion para desapilar un valor y cambiar la direccion del PC horizontalmente
+(defn horizontal-if
+  [estado]
+  (let [stack (:stack estado)
+        a (or (first stack) 0)
+        rest (rest stack)
+        dir (if (zero? a) :right :left)]
+    (-> estado
+        (assoc :stack rest)
+        (assoc-in [:pc :dir] dir))))
+
+;; Funcion para desapilar un valor y cambiar la direccion del PC verticalmente
+(defn vertical-if
+  [estado]
+  (let [stack (:stack estado)
+        a (or (first stack) 0)
+        rest (rest stack)
+        dir (if (zero? a) :down :up)]                       ;
+    (-> estado
+        (assoc :stack rest)
+        (assoc-in [:pc :dir] dir))))
+
 ;; Función -main
 (defn -main
   [& args]
