@@ -36,20 +36,20 @@
   [pc]
   (let [{:keys [x y dir]} pc
         nuevo-pc (case dir
-                 :right {:x (mod (inc x) grid-columnas) :y y :dir dir}
-                 :left  {:x (mod (dec x) grid-columnas) :y y :dir dir}
-                 :down  {:x x :y (mod (inc y) grid-filas) :dir dir}
-                 :up    {:x x :y (mod (dec y) grid-filas) :dir dir})]
+                   :right {:x (mod (inc x) grid-columnas) :y y :dir dir}
+                   :left  {:x (mod (dec x) grid-columnas) :y y :dir dir}
+                   :down  {:x x :y (mod (inc y) grid-filas) :dir dir}
+                   :up    {:x x :y (mod (dec y) grid-filas) :dir dir})]
     nuevo-pc))
 
 ;; Función auxiliar para aplicar operaciones binarias en la pila
 (defn operacion-binaria
   [estado op]
   (let [stack (:stack estado)
-        a (or (first stack) 0)                              ;;guardo en 'a' el valor superior de la pila. si no hay guardo 0
-        b (or (nth stack 1) 0)                              ;;guardo en 'b' el segundo valor superior de la pila. si no hay guardo 0
-        rest (drop 2 stack)                                 ;;guardo en rest el resto de la pila menos los ultimos dos elementos
-        resultado (op b a)]                                 ;realizo la operacion y lo guardo en resultado
+        a (or (first stack) 0)
+        b (nth stack 1 0)
+        rest (drop 2 stack)
+        resultado (op b a)]
     (assoc estado :stack (conj rest resultado))))
 
 ;; Función auxiliar para aplicar operaciones unarias en la pila
@@ -73,7 +73,7 @@
   [estado]
   (let [stack (:stack estado)
         a (or (first stack) 0)
-        b (or (nth stack 1) 0)
+        b (nth stack 1 0)
         rest (drop 2 stack)]
     (assoc estado :stack (conj rest a b))))
 
